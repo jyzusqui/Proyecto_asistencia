@@ -355,3 +355,287 @@ class GestionAsistencia:
         print(
             "Asistencia registrada correctamente."
         )
+
+
+    # ======================================================
+    # PARTE 2
+    # INTEGRANTE: JUAN JOSÉ YZUSQUI CALDERÓN
+    # ROL: INTERFAZ, CONSULTAS Y OBSERVER
+    # ======================================================
+
+
+    # ======================================================
+    # HU03: LISTAR TODOS LOS REGISTROS
+    # ======================================================
+
+    def listarAsistencias(self):
+
+        print(
+            "\n=========== LISTADO DE ASISTENCIAS ==========="
+        )
+
+
+        if not self.listaAsistencias:
+
+            print(
+                "No hay registros de asistencia."
+            )
+
+            return
+
+
+        print(
+            f"{'Código':<8} "
+            f"{'Fecha':<12} "
+            f"{'Inicio':<8} "
+            f"{'Fin':<8} "
+            f"{'Horas':>6}"
+        )
+
+
+        for asistencia in self.listaAsistencias:
+
+            print(asistencia)
+
+
+        print(
+            "================================================"
+        )
+
+        print(
+            f"Total de registros: "
+            f"{len(self.listaAsistencias)}"
+        )
+
+
+    # ======================================================
+    # HU04: BUSCAR POR CÓDIGO DE USUARIO
+    # ======================================================
+
+    def buscarAsistencia(self):
+
+        print(
+            "\n------ BUSCAR ASISTENCIA ------"
+        )
+
+
+        codigo = input(
+            "Ingrese código de usuario a buscar: "
+        ).strip()
+
+
+        colaborador = (
+            self.buscarColaboradorPorCodigo(codigo)
+        )
+
+        registros = (
+            self.buscarAsistenciasPorCodigo(codigo)
+        )
+
+
+        if not colaborador and not registros:
+
+            print(
+                "Colaborador no encontrado."
+            )
+
+            return
+
+
+        print(
+            "------------------------------------"
+        )
+
+
+        if colaborador:
+
+            print(
+                f"Encontrado: {colaborador}"
+            )
+
+
+        if registros:
+
+            print(
+                f"\nRegistros de asistencia "
+                f"({len(registros)}):"
+            )
+
+
+            for registro in registros:
+
+                print(registro)
+
+        else:
+
+            print(
+                "El colaborador no tiene "
+                "registros de asistencia aún."
+            )
+
+
+    # ======================================================
+    # HU09: EDITAR REGISTRO DE ASISTENCIA
+    # ======================================================
+
+    def editarAsistencia(self):
+
+        print(
+            "\n------ EDITAR ASISTENCIA ------"
+        )
+
+
+        codigo = input(
+            "Ingrese código de usuario a editar: "
+        ).strip()
+
+
+        fecha = input(
+            "Ingrese fecha del registro "
+            "a editar (dd/mm/aaaa): "
+        ).strip()
+
+
+        registro = next(
+            (
+                asistencia
+                for asistencia
+                in self.listaAsistencias
+
+                if asistencia.codigo_usuario == codigo
+                and asistencia.fecha == fecha
+            ),
+            None
+        )
+
+
+        if not registro:
+
+            print(
+                "Registro no encontrado."
+            )
+
+            return
+
+
+        print(
+            f"Datos actuales: "
+            f"{registro.fecha} | "
+            f"{registro.hora_inicio} - "
+            f"{registro.hora_fin}"
+        )
+
+
+        nueva_hora_inicio = input(
+            "Ingrese nueva hora de inicio "
+            "(dejar vacío para no cambiar): "
+        ).strip()
+
+
+        if nueva_hora_inicio:
+
+            if self._validar_hora(
+                nueva_hora_inicio
+            ):
+
+                registro.hora_inicio = (
+                    nueva_hora_inicio
+                )
+
+            else:
+
+                print(
+                    "Hora de inicio inválida, "
+                    "no se modificó."
+                )
+
+
+        nueva_hora_fin = input(
+            "Ingrese nueva hora de fin "
+            "(dejar vacío para no cambiar): "
+        ).strip()
+
+
+        if nueva_hora_fin:
+
+            if self._validar_hora(
+                nueva_hora_fin
+            ):
+
+                registro.hora_fin = (
+                    nueva_hora_fin
+                )
+
+            else:
+
+                print(
+                    "Hora de fin inválida, "
+                    "no se modificó."
+                )
+
+
+        print(
+            "------------------------------------"
+        )
+
+        print(
+            "Registro actualizado correctamente."
+        )
+
+
+    # ======================================================
+    # HU10: ELIMINAR REGISTRO DE ASISTENCIA
+    # ======================================================
+
+    def eliminarAsistencia(self):
+
+        print(
+            "\n------ ELIMINAR ASISTENCIA ------"
+        )
+
+
+        codigo = input(
+            "Ingrese código de usuario a eliminar: "
+        ).strip()
+
+
+        fecha = input(
+            "Ingrese fecha del registro: "
+        ).strip()
+
+
+        registro = next(
+            (
+                asistencia
+                for asistencia
+                in self.listaAsistencias
+
+                if asistencia.codigo_usuario == codigo
+                and asistencia.fecha == fecha
+            ),
+            None
+        )
+
+
+        if registro:
+
+            self.listaAsistencias.remove(
+                registro
+            )
+
+
+            print(
+                "------------------------------------"
+            )
+
+            print(
+                "Registro eliminado exitosamente."
+            )
+
+        else:
+
+            print(
+                "Registro no encontrado."
+            )
+
+
