@@ -355,4 +355,3 @@ class GestionAsistencia:
         print(
             "Asistencia registrada correctamente."
         )
-asd
